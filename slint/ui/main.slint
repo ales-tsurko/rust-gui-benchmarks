@@ -1,0 +1,41 @@
+import { ScrollView } from "std-widgets.slint";
+
+component Item inherits Rectangle {
+    width: 100px;
+    height: 100px;
+
+    in-out property <int> value: 1;
+
+    Text {
+        text: value;
+        width: 100%;
+        height: 100%;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+}
+
+export component MainWindow inherits Window {
+    min-width: 800px;
+    min-height: 600px;
+
+    callback start();
+    callback stop();
+
+    ScrollView {
+        width: 100%;
+        height: 100%;
+        viewport-width: parent.width;
+
+        VerticalLayout {
+            for value[index] in 10000:
+                Item {
+                    value: index + 1;
+                    init => {
+                        index == 0 ? root.start() : {};
+                        index == 9999 ? root.stop() : {};
+                    }
+                }
+        }
+    }
+}
